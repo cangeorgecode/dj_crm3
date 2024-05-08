@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>{{ user }}</p>
+    {% else %}
+    <h1>Authentication practice</h1>
+    {% endif %}
+    
+{% endblock content %}
