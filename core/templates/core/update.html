@@ -7,6 +7,9 @@
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+    <br>
+    <a href="{% url 'record' %}" class="btn btn-secondary">Back</a>
+    <a href="{% url 'delete_client' current_record.id %}" class="btn btn-danger">Delete</a>
     {% endif %}
 </div>
     

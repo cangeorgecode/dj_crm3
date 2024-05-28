@@ -1,8 +1,7 @@
 {% extends 'core/base.html' %}
 {% block content %}
+{% if user.is_authenticated %}
 <div class="container pt-4">
-   
-    
     <table class="table table-striped table-hover table-bordered">
         <thead class="table-dark">
           <tr>
@@ -16,26 +15,29 @@
             <th scope="col">Todo's</th>
           </tr>
         </thead>
-
         <tbody>
             {% if records %}
             {% for record in records %}
           <tr>
-            <td><a href="{% url 'client' record.id %}">{{ record.id }}</a></td>
+            <td><a href="{% url 'update_client' record.id %}">{{ record.id }}</a></td>
             <td>{{ record.full_name }}</td>
             <td>{{ record.biz_name }}</td>
             <td>{{ record.address}}</td>
             <td>{{ record.email }}</td>
             <td>{{ record.phone }}</td>
             <td>{{ record.category }}</td>
-            <td>{{ record.todo }}</td>
+            {% if record.todos %}
+              <td>{{ record.todos }}</td>
+            {% else %}
+              <td></td>
+            {% endif %}
           </tr>
           {% endfor %}
           {% endif %}
         </tbody>
-        
       </table>
   </div>
+  {% endif %}
 
 
 

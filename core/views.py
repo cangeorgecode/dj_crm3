@@ -18,11 +18,15 @@ def dashboard(request):
     return render(request, 'core/dashboard.html')
 
 def record(request):
-    records = Record.objects.all()
-    context = {
-        'records': records,
-    }
-    return render(request, 'core/record.html', context)
+    if request.user.is_authenticated:
+        records = Record.objects.all()
+        context = {
+            'records': records,
+        }
+        return render(request, 'core/record.html', context)
+    else:
+        messages.success(request, 'You must be logged in to see this')
+        return redirect('index')
 
 def client(request, pk):
     if request.user.is_authenticated:
@@ -66,7 +70,10 @@ def update_client(request, pk):
             form.save()
             messages.success(request, 'Record has been updated')
             return redirect('index')
-        return render(request, 'core/update.html', {'form': form})
+        return render(request, 'core/update.html', {
+            'form': form,
+            'current_record': current_record,
+            })
     else:
         messages.success(request, 'You must be logged in to update')
         return redirect('index')
@@ -78,7 +85,7 @@ def csv_record(request):
     records = Record.objects.all()
     writer.writerow(['Date Created', 'First Name', 'Last Name', 'Address', 'Email', 'Phone', 'Todo'])
     for record in records:
-        writer.writerow([record.created_at.strftime("%d-%b-%Y"), record.full_name, record.biz_name, record.address, record.email, record.phone, record.todo])
+        writer.writerow([record.created_at.strftime("%d-%b-%Y"), record.full_name, record.biz_name, record.address, record.email, record.phone, record.todos])
     return response
 
 def upload_csv_record(request):
@@ -99,4 +106,12 @@ def upload_csv_record(request):
         messages.success(request, 'You must be logged in to upload files')
         return redirect('index')
     
-
+def search(request):
+    if request.method == "POST":
+        searched = request.POST["searched"]
+        records = Record.objects.filter(full_name__contains=searched)
+        return render(request, 'core/search.html', {
+            'searched': searched,
+            'records': records,
+        })
+    return render(request, 'core/search.html', {})

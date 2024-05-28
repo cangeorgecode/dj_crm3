@@ -11,4 +11,5 @@ urlpatterns = [
     path('add_client/', views.add_client, name='add_client'),
     path('download/', views.csv_record, name='download_record'),
     path('upload/', views.upload_csv_record, name='upload_record'),
+    path('search/', views.search, name='search'),
 ]

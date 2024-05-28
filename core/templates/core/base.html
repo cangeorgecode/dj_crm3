@@ -23,12 +23,21 @@
                 <a class="nav-link" href="{% url 'add_client' %}">Add Client</a>   
                 <a class="nav-link" href="{% url 'download_record' %}">Export</a>   
                 <a class="nav-link" href="{% url 'upload_record' %}">Import</a>   
+
+          
             {% else %}
               <a class="nav-link" href="{% url 'login_user' %}">Login</a>
               <a class="nav-link" href="{% url 'register_user' %}">Register</a>
             {% endif %}
             </div>
           </div>
+          {% if user.is_authenticated %}
+          <form class="d-flex" role="search" method="POST" action="{% url 'search' %}">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Search Client" aria-label="Search" name="searched">
+            <button class="btn btn-outline-primary" type="submit" >Search</button>
+          </form>
+          {% endif %}
         </div>
       </nav>
     {% if messages %}
