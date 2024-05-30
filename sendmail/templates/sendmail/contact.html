@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div>
+    <h1 class="text-xl">Contact</h1><br>
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+{% endblock %}

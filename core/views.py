@@ -7,12 +7,16 @@ from django.http import HttpResponse
 from django.views.generic.base import View
 from csv import DictReader
 from io import TextIOWrapper
+from datetime import date, timedelta
 
 # CRUD
 # Import/Export csv files
 
 def index(request):
-    return render(request, 'core/index.html', {})
+    startdate = date.today()
+    enddate = startdate + timedelta(days=7)
+    todos = Todos.objects.filter(due_date__range=[startdate, enddate])
+    return render(request, 'core/index.html', {'todos': todos})
 
 def dashboard(request):
     return render(request, 'core/dashboard.html')
@@ -31,7 +35,14 @@ def record(request):
 def client(request, pk):
     if request.user.is_authenticated:
         client_record = Record.objects.get(id=pk)
-        return render(request, 'core/client.html', {'client_record': client_record})
+        todos = Todos.objects.filter(user_id=pk)
+        todo_form = AddTodoForm(request.POST or None)
+        if request.method == "POST":
+            if todo_form.is_valid():
+                todo_form.instance.user_id = client_record.id
+                todo_form.save()
+                return redirect('index')
+        return render(request, 'core/client.html', {'client_record': client_record, 'todos': todos, 'todo_form': todo_form})
     else:
         messages.success(request, "You must be logged in to view this")
         return redirect('index')
@@ -115,3 +126,21 @@ def search(request):
             'records': records,
         })
     return render(request, 'core/search.html', {})
+
+def add_todo(request):
+    form = AddTodoForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                form.instance.user_id = request.user.id
+                form.save()
+                messages.success(request, 'Task added')
+                return redirect('index')
+            else:
+                messages.success(request, 'There was an error filling the form, please try again')
+                return redirect('record')
+        else:
+            return render(request, 'core/add.html', {'form': form})
+    else:
+        messages.success(request, 'You need to be logged in to add a record')
+        return redirect('index')

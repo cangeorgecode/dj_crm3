@@ -6,4 +6,5 @@ urlpatterns = [
     path('membership/', include('membership.urls')),
     path('membership/', include('django.contrib.auth.urls')),
     path('', include('core.urls')),
+    path('contact/', include('sendmail.urls')),
 ]

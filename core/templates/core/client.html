@@ -1,22 +1,71 @@
-{% extends 'core/base.html' %}
-{% block content %}
-<div class="container pt-4 ">
-    <div class="card">
-        <h5 class="card-header"><strong>{{ client_record.full_name }}</strong></h5>
+{% extends 'core/base.html' %} {% block content %}
+<div class="container pt-4">
+  <div class="row">
+    <div class="col-4">
+      <div class="card">
+        <h5 class="card-header">
+          <strong>{{ client_record.full_name }}</strong>
+        </h5>
         <div class="card-body">
-          <p class="card-text"><strong>Business: </strong>{{ client_record.biz_name }}</p>
-          <p class="card-text"><strong>Address: </strong>{{ client_record.address }}</p>
-          <p class="card-text"><strong>Email: </strong>{{ client_record.email }}</p>
-          <p class="card-text"><strong>Phone: </strong>{{ client_record.phone }}</p>
-          <p class="card-text"><strong>Date Created: </strong>{{ client_record.created_at }}</p>
-          <p class="card-text"><strong>Notes: </strong>{{ client_record.notes }}</p>
-          
+          <p class="card-text">
+            <strong>Business: </strong>{{ client_record.biz_name }}
+          </p>
+          <p class="card-text">
+            <strong>Address: </strong>{{ client_record.address }}
+          </p>
+          <p class="card-text">
+            <strong>Email: </strong>{{ client_record.email }}
+          </p>
+          <p class="card-text">
+            <strong>Phone: </strong>{{ client_record.phone }}
+          </p>
+          <p class="card-text">
+            <strong>Date Created: </strong>{{ client_record.created_at }}
+          </p>
         </div>
-      </div>      
-</div>
-<div class="container pt-2">
-    <a href="{% url 'record' %}" class="btn btn-secondary">Back</a>
-    <a href="{% url 'update_client' client_record.id %}" class="btn btn-primary">Update</a>
-    <a href="{% url 'delete_client' client_record.id %}" class="btn btn-danger">Delete</a>
+      </div>
+      <div class="container pt-2 text-center">
+        <a href="{% url 'record' %}" class="btn btn-secondary">Back</a>
+        <a href="{% url 'update_client' client_record.id %}" class="btn btn-primary"
+          >Update</a
+        >
+        <a href="{% url 'delete_client' client_record.id %}" class="btn btn-danger"
+          >Delete</a
+        >
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="card">
+        <h5 class="card-header">
+          <strong>Tasks</strong>
+        </h5>
+        <div class="card-body">
+          <p class="card-text">
+            <div class="row">
+              <div class="col">
+                <form method="POST">
+                  {% csrf_token %}
+                  {{ todo_form }}
+
+                  <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <input type="text" class="form-control" name="due_date" placeholder="Due Date">
+                </div>
+              </div>
+            </div>
+          </p>
+        </div>
+      </div>
+      {% for todo in todos %}
+        {{ todo.user_id }}
+        {{ todo.todos }}
+      {% endfor %}
+      {{ client_record.id }}
+    </div>
   </div>
+</div>
+
 {% endblock content %}

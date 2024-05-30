@@ -13,13 +13,14 @@
             <th scope="col">Phone</th>
             <th scope="col">Category</th>
             <th scope="col">Todo's</th>
+            <th scope="col">Due date</th>
           </tr>
         </thead>
         <tbody>
             {% if records %}
             {% for record in records %}
           <tr>
-            <td><a href="{% url 'update_client' record.id %}">{{ record.id }}</a></td>
+            <td><a href="{% url 'client' record.id %}">{{ record.id }}</a></td>
             <td>{{ record.full_name }}</td>
             <td>{{ record.biz_name }}</td>
             <td>{{ record.address}}</td>
@@ -28,6 +29,11 @@
             <td>{{ record.category }}</td>
             {% if record.todos %}
               <td>{{ record.todos }}</td>
+              {% if record.due_date %}
+              <td>{{ record.due_date }}</td>
+              {% else %}
+              <td></td>
+              {% endif %}
             {% else %}
               <td></td>
             {% endif %}

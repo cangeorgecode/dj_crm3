@@ -3,10 +3,9 @@ from .models import *
 from django.forms import FileField, Form
 
 class AddRecordForm(forms.ModelForm):
-
     class Meta:
         model = Record
-        fields = ('full_name', 'biz_name', 'address', 'email', 'phone', 'category', 'todos')
+        fields = ('full_name', 'biz_name', 'address', 'email', 'phone', 'category')
 
     def __init__(self, *args, **kwargs):
         super(AddRecordForm, self).__init__(*args, **kwargs)
@@ -40,11 +39,7 @@ class AddRecordForm(forms.ModelForm):
         self.fields['category'].widget.attrs['class'] = 'form-select'
         self.fields['category'].widget.attrs['placeholder'] = 'Phone'
         self.fields['category'].help_text = ''
-
-        self.fields['todos'].label = ''
-        self.fields['todos'].widget.attrs['class'] = 'form-control'
-        self.fields['todos'].widget.attrs['placeholder'] = 'Todo'
-        self.fields['todos'].help_text = ''
+   
 
 class UploadForm(Form):
     records_file = FileField()
@@ -56,3 +51,10 @@ class UploadForm(Form):
         self.fields['records_file'].widget.attrs['class'] = 'form-control'
         self.fields['records_file'].widget.attrs['placeholder'] = ''
         self.fields['records_file'].help_text = ''
+
+class AddTodoForm(forms.ModelForm):
+    due_date = forms.DateField(widget = forms.SelectDateWidget())
+
+    class Meta:
+        model = Todos
+        fields = ('todos', 'due_date',)
