@@ -26,14 +26,45 @@
       </div>
       <div class="container pt-2 text-center">
         <a href="{% url 'record' %}" class="btn btn-secondary">Back</a>
-        <a href="{% url 'update_client' client_record.id %}" class="btn btn-primary"
-          >Update</a
-        >
-        <a href="{% url 'delete_client' client_record.id %}" class="btn btn-danger"
-          >Delete</a
-        >
+        <a href="{% url 'update_client' client_record.id %}" class="btn btn-primary">Update</a>
+        <a href="{% url 'delete_client' client_record.id %}" class="btn btn-danger">Delete</a>
+      </div>
+      <div class="container pt-4 text-center">
+        <form method="POST" id="transaction">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" class="form-control" name="service" placeholder="Service rendered">
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control" name="amount" placeholder="Amount">
+          </div>
+          <button type="submit" class="btn btn-primary" name="transaction">Add</button>
+          </form>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Service</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in transactions %}
+            <tr>
+              <td>{{ t.service }}</td>
+              <td>${{ t.amount }}</td>
+            </tr>
+          </tbody>
+          {% endfor %}
+        </table>
+          
+        
+  
       </div>
     </div>
+
+
+
+    <!-- second column -->
     <div class="col-4">
       <div class="card">
         <h5 class="card-header">
@@ -109,5 +140,32 @@
 
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+      $("#transaction").submit(function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          const formData = {
+              service: $("input[name='service']").val(),
+              amount: $("input[name='amount']").val()
+          };
+
+          $.ajax({
+              url: "/client/", // Replace with your actual API URL
+              type: "POST",
+              data: JSON.stringify(formData),
+              contentType: "application/json",
+              success: function (response) {
+                  console.log("Server response:", response);
+                  // Handle the response from the server
+              },
+              error: function (error) {
+                  console.error("Error sending POST request:", error);
+              }
+          });
+      });
+  });
+</script>
 
 {% endblock content %}

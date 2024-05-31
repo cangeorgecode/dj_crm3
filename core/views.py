@@ -3,7 +3,7 @@ from .models import *
 from django.contrib import messages
 from .forms import *
 import csv
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.generic.base import View
 from csv import DictReader
 from io import TextIOWrapper
@@ -39,6 +39,8 @@ def client(request, pk):
         todo_form = AddTodoForm(request.POST or None)
         interactions = Interaction.objects.filter(client_id=pk)
         interaction_form = AddInteractions(request.POST or None)
+        transactions = Transaction.objects.filter(client_id=pk)
+        transaction_form = AddTransaction(request.POST or None)
         if request.method == "POST":
             if 'todo' in request.POST:
                 if todo_form.is_valid():
@@ -50,12 +52,24 @@ def client(request, pk):
                     interaction_form.instance.client_id = client_record.id
                     interaction_form.save()
                     return redirect('record')
+            elif 'transaction' in request.POST:
+                if transaction_form.is_valid():
+                    transaction_form.instance.client_id = client_record.id
+                    transaction_form.instance.service = request.POST.get('service')
+                    transaction_form.instance.amount = request.POST.get('amount')
+                    transaction_form.save()
+                #     new_item = "Newly Added Item"
+                #     return JsonResponse({"newItem": new_item})
+                # else:
+                #     return JsonResponse({"error": "Invalid request method."}, status=400)
         return render(request, 'core/client.html', {
             'client_record': client_record, 
             'todos': todos, 
             'todo_form': todo_form,
             'interactions': interactions,
             'interaction_form': interaction_form,
+            'transactions': transactions,
+            'transaction_form': transaction_form,
             })
     else:
         messages.success(request, "You must be logged in to view this")

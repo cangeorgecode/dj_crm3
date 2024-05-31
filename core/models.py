@@ -41,3 +41,12 @@ class Interaction(models.Model):
 
     def __str__(self):
         return(f"{self.interaction_date, self.notes}")
+
+class Transaction(models.Model):
+    transaction_date = models.DateField(auto_now_add=True)
+    client_id = models.IntegerField()
+    service = models.CharField(max_length=100)
+    amount = models.FloatField()
+
+    def __str__(self):
+        return(f"{self.transaction_date, self.service, self.amount}")

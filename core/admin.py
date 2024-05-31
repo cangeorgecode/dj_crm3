@@ -7,3 +7,4 @@ class RecordAdmin(admin.ModelAdmin):
 admin.site.register(Record, RecordAdmin)
 admin.site.register(Todos)
 admin.site.register(Interaction)
+admin.site.register(Transaction)

@@ -98,3 +98,21 @@ class AddInteractions(forms.ModelForm):
         self.fields['follow_up'].widget.attrs['class'] = 'form-control'
         self.fields['follow_up'].widget.attrs['placeholder'] = 'Follow up actions'
         self.fields['follow_up'].help_text = ''
+
+class AddTransaction(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ('service', 'amount',)
+
+    def __init__(self, *args, **kwargs):
+        super(AddTransaction, self).__init__(*args, **kwargs)
+
+        self.fields['service'].label = ''
+        self.fields['service'].widget.attrs['class'] = 'form-control'
+        self.fields['service'].widget.attrs['placeholder'] = 'Service rendered'
+        self.fields['service'].help_text = ''
+
+        self.fields['amount'].label = ''
+        self.fields['amount'].widget.attrs['class'] = 'form-control'
+        self.fields['amount'].widget.attrs['placeholder'] = 'Amount owed'
+        self.fields['amount'].help_text = ''
