@@ -72,3 +72,29 @@ class AddTodoForm(forms.ModelForm):
         self.fields['todos'].widget.attrs['class'] = 'form-control'
         self.fields['todos'].widget.attrs['placeholder'] = 'Task'
         self.fields['todos'].help_text = ''
+
+class AddInteractions(forms.ModelForm):
+    class Meta:
+        model = Interaction
+        fields = ('interaction_type', 'notes', 'follow_up', )
+        # widgets = {
+        #     'due_date': DateInput()
+        # }
+
+    def __init__(self, *args, **kwargs):
+        super(AddInteractions, self).__init__(*args, **kwargs)
+
+        self.fields['interaction_type'].label = ''
+        self.fields['interaction_type'].widget.attrs['class'] = 'form-select'
+        self.fields['interaction_type'].widget.attrs['placeholder'] = 'Notes'
+        self.fields['interaction_type'].help_text = ''
+
+        self.fields['notes'].label = ''
+        self.fields['notes'].widget.attrs['class'] = 'form-control'
+        self.fields['notes'].widget.attrs['placeholder'] = 'Notes'
+        self.fields['notes'].help_text = ''
+
+        self.fields['follow_up'].label = ''
+        self.fields['follow_up'].widget.attrs['class'] = 'form-control'
+        self.fields['follow_up'].widget.attrs['placeholder'] = 'Follow up actions'
+        self.fields['follow_up'].help_text = ''

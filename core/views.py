@@ -37,12 +37,26 @@ def client(request, pk):
         client_record = Record.objects.get(id=pk)
         todos = Todos.objects.filter(user_id=pk)
         todo_form = AddTodoForm(request.POST or None)
+        interactions = Interaction.objects.filter(client_id=pk)
+        interaction_form = AddInteractions(request.POST or None)
         if request.method == "POST":
-            if todo_form.is_valid():
-                todo_form.instance.user_id = client_record.id
-                todo_form.save()
-                return redirect('index')
-        return render(request, 'core/client.html', {'client_record': client_record, 'todos': todos, 'todo_form': todo_form})
+            if 'todo' in request.POST:
+                if todo_form.is_valid():
+                    todo_form.instance.user_id = client_record.id
+                    todo_form.save()
+                    return redirect('index')
+            elif 'interaction' in request.POST:
+                if interaction_form.is_valid():
+                    interaction_form.instance.client_id = client_record.id
+                    interaction_form.save()
+                    return redirect('record')
+        return render(request, 'core/client.html', {
+            'client_record': client_record, 
+            'todos': todos, 
+            'todo_form': todo_form,
+            'interactions': interactions,
+            'interaction_form': interaction_form,
+            })
     else:
         messages.success(request, "You must be logged in to view this")
         return redirect('index')

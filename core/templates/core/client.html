@@ -46,7 +46,7 @@
                 <form method="POST">
                   {% csrf_token %}
                   {{ todo_form.as_p }}
-                  <button type="submit" class="btn btn-primary">Add</button>
+                  <button type="submit" class="btn btn-primary" name="todo">Add</button>
                 </form>
               </div>
 
@@ -81,14 +81,30 @@
           <strong>Interaction</strong>
         </h5>
         <div class="card-body">
-          <ul>
-            <li>Date of interaction</li>
-            <li>Type of interaction</li>
-            <li>Notes</li>
-            <li>Follow up actions</li>
-          </ul>
+          <form method="POST">
+            {% csrf_token %}
+            {{ interaction_form.as_p }}
+            <button type="submit" class="btn btn-primary" name="interaction">Add</button>
+            </form>
         </div>
       </div>
+      {% for i in interactions %}
+      <div class="container pt-2">
+        
+        <div class="card text-center">
+          <div class="card-header">
+            <strong>{{ i.interaction_type }} {{ i.interaction_date }}</strong>
+          </div>
+          <div class="card-body">
+            <!-- <h5 class="card-title">Special title treatment</h5> -->
+            <p class="card-text">{{ i.notes }}</p>
+          </div>
+          <div class="card-footer text-body-secondary">
+            {{ i.follow_up }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
 
   </div>

@@ -6,6 +6,12 @@ CHOICES = (
     ('customer', 'customer'),
 )
 
+INTERACTIONS = (
+    ('email', 'email'),
+    ('phone', 'phone'),
+    ('meeting', 'meeting'),
+)
+
 class Record(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     full_name = models.CharField(max_length=50)
@@ -26,4 +32,12 @@ class Todos(models.Model):
     def __str__(self):
         return(f"{self.user_id}")
 
+class Interaction(models.Model):
+    interaction_date = models.DateField(auto_now_add=True)
+    interaction_type = models.CharField(max_length=100, choices=INTERACTIONS, default="email")
+    notes = models.CharField(max_length=255)
+    follow_up = models.CharField(max_length=255)
+    client_id = models.IntegerField()
 
+    def __str__(self):
+        return(f"{self.interaction_date, self.notes}")
