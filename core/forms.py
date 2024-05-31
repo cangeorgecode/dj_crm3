@@ -52,9 +52,23 @@ class UploadForm(Form):
         self.fields['records_file'].widget.attrs['placeholder'] = ''
         self.fields['records_file'].help_text = ''
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class AddTodoForm(forms.ModelForm):
-    due_date = forms.DateField(widget = forms.SelectDateWidget())
+    # due_date = forms.DateField(widget = forms.SelectDateWidget())
 
     class Meta:
         model = Todos
         fields = ('todos', 'due_date',)
+        widgets = {
+            'due_date': DateInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(AddTodoForm, self).__init__(*args, **kwargs)
+
+        self.fields['todos'].label = ''
+        self.fields['todos'].widget.attrs['class'] = 'form-control'
+        self.fields['todos'].widget.attrs['placeholder'] = 'Task'
+        self.fields['todos'].help_text = ''

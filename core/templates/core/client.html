@@ -45,23 +45,31 @@
               <div class="col">
                 <form method="POST">
                   {% csrf_token %}
-                  {{ todo_form }}
-
+                  {{ todo_form.as_p }}
                   <button type="submit" class="btn btn-primary">Add</button>
                 </form>
               </div>
-              <div class="col">
-                <div class="mb-3">
-                  <input type="text" class="form-control" name="due_date" placeholder="Due Date">
-                </div>
-              </div>
+
             </div>
           </p>
         </div>
       </div>
       {% for todo in todos %}
-        {{ todo.user_id }}
-        {{ todo.todos }}
+      <div class="container pt-2">
+        <div class="card text-center">
+          <div class="card-header">
+            <strong>{{ todo.todos }}</strong>
+          </div>
+          <div class="card-body">
+            <!-- <h5 class="card-title">Special title treatment</h5> -->
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          </div>
+          <div class="card-footer text-body-secondary">
+            Due: {{ todo.due_date }}
+          </div>
+        </div>
+      </div>
+
       {% endfor %}
       {{ client_record.id }}
     </div>
