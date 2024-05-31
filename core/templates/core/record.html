@@ -12,8 +12,6 @@
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
             <th scope="col">Category</th>
-            <th scope="col">Todo's</th>
-            <th scope="col">Due date</th>
           </tr>
         </thead>
         <tbody>
@@ -27,16 +25,6 @@
             <td>{{ record.email }}</td>
             <td>{{ record.phone }}</td>
             <td>{{ record.category }}</td>
-            {% if record.todos %}
-              <td>{{ record.todos }}</td>
-              {% if record.due_date %}
-              <td>{{ record.due_date }}</td>
-              {% else %}
-              <td></td>
-              {% endif %}
-            {% else %}
-              <td></td>
-            {% endif %}
           </tr>
           {% endfor %}
           {% endif %}

@@ -1,22 +1,55 @@
 {% extends 'core/base.html' %} {% block content %}
 <div class="container text-center pt-4">
   {% if user.is_authenticated %}
-  <h1>Hello, {{ user }}</h1>
-  <h3>Today is {% now "d M Y" %}</h3>
-  <br />
-  <h3>This week's tasks</h3>
-  {% for todo in todos %}
-  <div class="container pt-4">
-    <div class="card">
-      <h5 class="card-header">{{ record.full_name }}</h5>
-      <div class="card-body">
-        <h5 class="card-title">{{ todo.todos }}</h5>
-        <p class="card-text">Due date: {{ todo.due_date }}</p>
-        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+  <div class="row">
+    <div class="col-4">
+      <div class="d-flex justify-content-center">
+        <div class="card" style="width: 18rem">
+          <div class="card-body">
+            <h5 class="card-title">{{ user }}</h5>
+            <p class="card-text">This is your profile</p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Your email is: {{ user.email }}
+              <a href="{% url 'update_email' %}">Update Email</a>
+            </li>
+            {% if user.is_superuser %}
+            <li class="list-group-item">You are a super user</li>
+            {% else %}
+            <li class="list-group-item">You are an employee</li>
+            {% endif %}
+            <li class="list-group-item">A third item</li>
+          </ul>
+          <div class="card-body">
+            <a href="{% url 'update_password' %}" class="card-link"
+              >Update password</a
+            >
+          </div>
+        </div>
       </div>
     </div>
+    <div class="col-4">
+      <h1>Hello, {{ user }}</h1>
+      <h3>Today is {% now "d M Y" %}</h3>
+      <br />
+      <h3>This week's tasks</h3>
+      {% for todo in todos %}
+      <div class="container pt-4">
+        <div class="card">
+          <h5 class="card-header">{{ record.full_name }}</h5>
+          <div class="card-body">
+            <h5 class="card-title">{{ todo.todos }}</h5>
+            <p class="card-text">Due date: {{ todo.due_date }}</p>
+            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
   </div>
-  {% endfor %} {% else %}
+  {% else %}
   <h1>Custom CRM</h1>
   {% endif %}
 </div>
