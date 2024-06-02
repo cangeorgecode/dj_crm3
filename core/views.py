@@ -172,3 +172,7 @@ def add_todo(request):
     else:
         messages.success(request, 'You need to be logged in to add a record')
         return redirect('index')
+
+def interact(request, pk):
+    client = Record.objects.filter(id=pk)
+    return render(request, 'core/interact.html', {'client': client})

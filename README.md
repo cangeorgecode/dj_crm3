@@ -1,6 +1,9 @@
 # Core features of a CRM
 
 Goal: To build a CRM for small-medium sized businesses
+Automate email marketing campaign
+Collecting, recording and putting notes on any prospective clients
+Integrate email function, email templates, 
 
 ## Contact management (Done for now)
 
